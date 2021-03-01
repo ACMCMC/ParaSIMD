@@ -8,12 +8,12 @@ for c in $lista_c;
 do
     for l in $lista_l;
     do
-        f=$(((64/(8*$c))*$l))
-        f=$(bc <<< "scale=0;((64/(8*$c))*$l)/1")
-        for id_prueba in {1..2};
+        f=$(bc <<< "scale=2; (64/(8*$c))*$l")
+        f=$(echo "$f" | awk '{printf("%.0f\n", $1)}')
+        for id_prueba in {1..100};
         do
             echo "Ejecutando prueba con C=$c L=$l F=$f"
-            #eval "./codigo.out $c $f $id_prueba"
+            eval "./codigo.out $c $f $id_prueba"
         done
     done
 done
