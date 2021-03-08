@@ -5,6 +5,46 @@
 
 #define LINEA_CACHE 64 // Bytes que hay en una línea caché
 
+static unsigned cyc_hi = 0;
+static unsigned cyc_lo = 0;
+/* Set *hi and *lo to the high and low order bits of the cycle counter.
+ Implementation requires assembly code to use the rdtsc instruction. */
+void access_counter(unsigned *hi, unsigned *lo)
+{
+    asm("rdtsc; movl %%edx,%0; movl %%eax,%1" /* Read cycle counter */
+        : "=r"(*hi), "=r"(*lo)                /* and move results to */
+        : /* No input */                      /* the two outputs */
+        : "%edx", "%eax");
+}
+
+/* Record the current value of the cycle counter. */
+void start_counter()
+{
+    access_counter(&cyc_hi, &cyc_lo);
+}
+
+/* Return the number of cycles since the last call to start_counter. */
+double get_counter()
+{
+    unsigned ncyc_hi, ncyc_lo;
+    unsigned hi, lo, borrow;
+    double result;
+
+    /* Get cycle counter */
+    access_counter(&ncyc_hi, &ncyc_lo);
+
+    /* Do double precision subtraction */
+    lo = ncyc_lo - cyc_lo;
+    borrow = lo > ncyc_lo;
+    hi = ncyc_hi - cyc_hi - borrow;
+    result = (double)hi * (1 << 30) * 4 + lo;
+    if (result < 0)
+    {
+        fprintf(stderr, "Error: counter returns neg value: %.0f\n", result);
+    }
+    return result;
+}
+
 void escribir_resultado(int id_prueba, int C, int F, clock_t tiempo)
 {
     FILE *fp;
@@ -20,7 +60,7 @@ void escribir_resultado(int id_prueba, int C, int F, clock_t tiempo)
 int main(int argc, char **argv)
 {
     int i, j, swap, swap_i, C, F, id_prueba;
-    clock_t inicio, fin;
+    double tiempo;
     double **M;
     int *ind;
     double red[10];
@@ -63,7 +103,7 @@ int main(int argc, char **argv)
         }
     }
 
-    inicio = clock();
+    start_counter();
 
     for (i = 0; i < 10; i++)
     {
@@ -75,9 +115,9 @@ int main(int argc, char **argv)
         red[i] = suma;
     }
 
-    fin = clock();
+    tiempo = get_counter();
 
-    printf("RED: ");
+    printf("Resultados de la reducción: ");
     for (int i = 0; i < 10; i++)
     {
         printf("%lf  ", red[i]);
@@ -100,7 +140,7 @@ int main(int argc, char **argv)
     _mm_free(M);
     free(ind);
 
-    escribir_resultado(id_prueba, C, F, fin - inicio);
+    escribir_resultado(id_prueba, C, F, tiempo);
 
     exit(EXIT_SUCCESS);
 }

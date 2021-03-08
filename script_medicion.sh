@@ -1,3 +1,4 @@
+#!/bin/bash
 make # Compilamos
 rm medidas.csv # Limpiamos el fichero de resultados
 lista_c="4 8 20 40"
