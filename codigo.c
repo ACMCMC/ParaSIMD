@@ -52,7 +52,7 @@ void escribir_resultado(int id_prueba, int C, int F, clock_t tiempo)
     fp = fopen("medidas.csv", "a");
     if (fp)
     {
-        fprintf(fp, "%d;%d;%d;%ld\n", id_prueba, C, F, tiempo);
+        fprintf(fp, "%d,%d,%d,%ld\n", id_prueba, C, F, tiempo);
         fclose(fp);
     }
 }
