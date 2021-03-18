@@ -66,6 +66,7 @@ int main(int argc, char **argv)
     double red[10];
     double suma, media;
     size_t salto_linea_cache;
+    double num_accesos;
 
     if (argc != 5)
     {
@@ -138,7 +139,9 @@ int main(int argc, char **argv)
     _mm_free(M);
     free(ind);
 
-    escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / (10.0*((double)F)));
+    num_accesos = (10.0*((double)(F*(1 + ((C-1)/salto_linea_cache)))));
+
+    escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / num_accesos);
 
     exit(EXIT_SUCCESS);
 }
