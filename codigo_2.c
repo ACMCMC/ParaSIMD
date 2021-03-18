@@ -49,7 +49,7 @@ void escribir_resultado(int id_prueba, int C, int F, int L, double tiempo, doubl
 {
     FILE *fp;
 
-    fp = fopen("medidas.csv", "a");
+    fp = fopen("medidas_red2.csv", "a");
     if (fp)
     {
         fprintf(fp, "%d,%d,%d,%d,%lf,%lf\n", id_prueba, C, F, L, tiempo, tiempo_por_acceso);
@@ -59,12 +59,13 @@ void escribir_resultado(int id_prueba, int C, int F, int L, double tiempo, doubl
 
 int main(int argc, char **argv)
 {
-    int i, j, swap, swap_i, C, F, L, id_prueba;
+    int i, j, k, C, F, L, id_prueba;
     double tiempo;
     double **M;
     int *ind;
     double red[10];
     double suma, media;
+    size_t salto_linea_cache;
 
     if (argc != 5)
     {
@@ -79,19 +80,13 @@ int main(int argc, char **argv)
 
     srand(clock());
 
-    ind = malloc(F * sizeof(int));
+    salto_linea_cache = LINEA_CACHE / (sizeof(double)); // La cantidad que tenemos que avanzar dentro de la matriz
+
+    ind = malloc(F * sizeof(int)); // El vector de índices se puede reservar con malloc()
 
     for (i = 0; i < F; i++)
     { // Inicializamos los elementos del vector a 0, 1, 2, ...
         ind[i] = i;
-    }
-
-    for (i = 0; i < F * 5; i++)
-    { // Barajamos los elementos del vector. Recorremos dos veces el vector, haciendo intercambios de forma aleatoria.
-        swap_i = rand() % F;
-        swap = ind[i % F];
-        ind[i % F] = ind[swap_i];
-        ind[swap_i] = swap;
     }
 
     M = (double **)_mm_malloc(F * sizeof(double *), LINEA_CACHE);
@@ -111,7 +106,9 @@ int main(int argc, char **argv)
         suma = 0;
         for (j = 0; j < F; j++)
         {
-            suma = suma + M[ind[j]][0];
+            for (k = 0; k < C; k+=salto_linea_cache) {
+                suma = suma + M[ind[j]][k]; // Al cambiar de línea, empezamos de nuevo en k=0
+            }
         }
         red[i] = suma;
     }

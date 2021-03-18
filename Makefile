@@ -1,4 +1,4 @@
-ARCHS_C := codigo.c
+ARCHS_C := codigo_1.c codigo_2.c
 
 OUTPUTS := $(ARCHS_C:.c=.out)
 
