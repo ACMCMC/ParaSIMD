@@ -45,36 +45,37 @@ double get_counter()
     return result;
 }
 
-void escribir_resultado(int id_prueba, int C, int F, double tiempo, double tiempo_por_acceso)
+void escribir_resultado(int id_prueba, int C, int F, int L, double tiempo, double tiempo_por_acceso)
 {
     FILE *fp;
 
     fp = fopen("medidas.csv", "a");
     if (fp)
     {
-        fprintf(fp, "%d,%d,%d,%lf,%lf\n", id_prueba, C, F, tiempo, tiempo_por_acceso);
+        fprintf(fp, "%d,%d,%d,%d,%lf,%lf\n", id_prueba, C, F, L, tiempo, tiempo_por_acceso);
         fclose(fp);
     }
 }
 
 int main(int argc, char **argv)
 {
-    int i, j, swap, swap_i, C, F, id_prueba;
+    int i, j, swap, swap_i, C, F, L, id_prueba;
     double tiempo;
     double **M;
     int *ind;
     double red[10];
     double suma, media;
 
-    if (argc != 4)
+    if (argc != 5)
     {
-        fprintf(stderr, "Formato del comando: %s [C] [F] [ID de prueba]", argv[0]);
+        fprintf(stderr, "Formato del comando: %s [C] [F] [L] [ID de prueba]", argv[0]);
         exit(EXIT_FAILURE);
     }
 
     C = atoi(argv[1]);
     F = atoi(argv[2]);
-    id_prueba = atoi(argv[3]);
+    L = atoi(argv[3]);
+    id_prueba = atoi(argv[4]);
 
     srand(clock());
 
@@ -140,7 +141,7 @@ int main(int argc, char **argv)
     _mm_free(M);
     free(ind);
 
-    escribir_resultado(id_prueba, C, F, tiempo, tiempo / (10.0*((double)F)));
+    escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / (10.0*((double)F)));
 
     exit(EXIT_SUCCESS);
 }
