@@ -7,7 +7,7 @@ rm medidas_red2.csv # Limpiamos el fichero de resultados
 touch medidas_red2.csv
 echo 'ID_PRUEBA,C,F,L,T_TOTAL,T_POR_ACCESO' > medidas_red2.csv
 lista_c="4 8 12 16 20 30 40 50 60"
-lista_l="384 1152 4096 12288 49152 73728 196608 393216"
+lista_l="384 1152 4096 12288 49152 73728 196608 393216 786432"
 for id_prueba in {1..50};
 do
     echo "=========== ID DE PRUEBA: $id_prueba ==========="
