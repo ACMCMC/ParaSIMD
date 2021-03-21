@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     }
 
     for (i = 0; i < F * 5; i++)
-    { // Barajamos los elementos del vector. Recorremos dos veces el vector, haciendo intercambios de forma aleatoria.
+    { // Barajamos los elementos del vector. Recorremos múltiples veces el vector, haciendo intercambios de forma aleatoria.
         swap_i = rand() % F;
         swap = ind[i % F];
         ind[i % F] = ind[swap_i];
