@@ -15,7 +15,7 @@ do
         do
         f=$(bc <<< "scale=2; (64/(8*$c))*$l") # Calculamos el numero de filas que se corresponden con ese valor de L
         f=$(echo "$f" | awk '{printf("%.0f\n", $1)}') # Eliminamos los decimales
-            echo "Ejecutando prueba con C=$c L=$l F=$f" # Información por pantalla
+            echo "Ejecutando prueba con C=$c L=$l F=$f" # Informacion por pantalla
             eval "./codigo_1.out $c $f $l $id_prueba" # Ejecutamos el primer experimento
             eval "./codigo_2.out $c $f $l $id_prueba" # Ejecutamos el segundo experimento
         done
