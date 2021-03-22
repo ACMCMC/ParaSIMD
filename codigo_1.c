@@ -3,7 +3,7 @@
 #include <pmmintrin.h>
 #include <time.h>
 
-#define LINEA_CACHE 64 // Bytes que hay en una línea caché
+#define LINEA_CACHE 64 // Bytes que hay en una línea cache
 
 static unsigned cyc_hi = 0;
 static unsigned cyc_lo = 0;
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     }
 
     for (i = 0; i < F * 5; i++)
-    { // Barajamos los elementos del vector. Recorremos múltiples veces el vector, haciendo intercambios de forma aleatoria.
+    { // Barajamos los elementos del vector. Recorremos multiples veces el vector, haciendo intercambios de forma aleatoria
         swap_i = rand() % F;
         swap = ind[i % F];
         ind[i % F] = ind[swap_i];
@@ -105,26 +105,28 @@ int main(int argc, char **argv)
         }
     }
 
-    start_counter();
+    start_counter(); // Iniciamos el contador
 
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < 10; i++) // Realizamos 10 reducciones
     {
         suma = 0;
         for (j = 0; j < F; j++)
         {
-            suma = suma + M[ind[j]][0];
+            suma = suma + M[ind[j]][0]; // Sumamos el elemento 0 de cada fila
         }
-        red[i] = suma;
+        red[i] = suma; // Guardamos el resultado de la reducción
     }
 
-    tiempo = get_counter();
+    tiempo = get_counter(); // Paramos el contador
 
-    printf("Resultados de la reducción: ");
+    // Imprimimos los resultados de calcular la reducción
+    printf("Resultados de la reduccion: ");
     for (int i = 0; i < 10; i++)
     {
         printf("%lf  ", red[i]);
     }
 
+    // Calculamos la media
     media = 0;
     for (i = 0; i < 10; i++)
     {
@@ -133,17 +135,19 @@ int main(int argc, char **argv)
 
     media = media / 10.0;
 
-    printf("\nMedia: %lf\n", media);
+    printf("\nMedia: %lf\n", media); // Imprimimos el resultado de la media
 
+    // Liberamos la memoria
     for (i = 0; i < F; i++)
-    { // Liberamos la memoria
+    {
         free(M[i]);
     }
     _mm_free(M);
     free(ind);
 
-    num_accesos = (10.0*((double)F));
-    escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / num_accesos);
+    num_accesos = (10.0*((double)F));  // El número de accesos el número de filas, por 10
+
+    escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / num_accesos); // Escribimos los resultados en el archivo CSV
 
     exit(EXIT_SUCCESS);
 }

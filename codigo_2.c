@@ -100,9 +100,9 @@ int main(int argc, char **argv)
         }
     }
 
-    start_counter();
+    start_counter(); // Iniciamos el contador
 
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < 10; i++) // Realizamos 10 reducciones
     {
         suma = 0;
         for (j = 0; j < F; j++)
@@ -111,17 +111,19 @@ int main(int argc, char **argv)
                 suma = suma + M[ind[j]][k]; // Al cambiar de línea, empezamos de nuevo en k=0
             }
         }
-        red[i] = suma;
+        red[i] = suma; // Guardamos el resultado de la reducción
     }
 
-    tiempo = get_counter();
+    tiempo = get_counter(); // Paramos el contador
 
+    // Imprimimos los resultados de calcular la reducción
     printf("Resultados de la reducción: ");
     for (int i = 0; i < 10; i++)
     {
         printf("%lf  ", red[i]);
     }
 
+    // Calculamos la media
     media = 0;
     for (i = 0; i < 10; i++)
     {
@@ -130,7 +132,7 @@ int main(int argc, char **argv)
 
     media = media / 10.0;
 
-    printf("\nMedia: %lf\n", media);
+    printf("\nMedia: %lf\n", media); // Imprimimos el resultado de la media
 
     for (i = 0; i < F; i++)
     { // Liberamos la memoria
@@ -139,9 +141,9 @@ int main(int argc, char **argv)
     _mm_free(M);
     free(ind);
 
-    num_accesos = (10.0*((double)(F*(1 + ((C-1)/salto_linea_cache)))));
+    num_accesos = (10.0*((double)(F*(1 + ((C-1)/salto_linea_cache))))); // El número de accesos es el mayor índice de la fila, dividido entre el número de elementos de una línea caché y truncado, más uno, porque siempre se accede al elemento 0, multiplicado por el número de filas y por 10, porque hacemos 10 reducciones.
 
-    escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / num_accesos);
+    escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / num_accesos); // Escribimos los resultados en el archivo CSV
 
     exit(EXIT_SUCCESS);
 }
