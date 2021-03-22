@@ -3,7 +3,7 @@
 #include <pmmintrin.h>
 #include <time.h>
 
-#define LINEA_CACHE 64 // Bytes que hay en una línea caché
+#define LINEA_CACHE 64 // Bytes que hay en una linea cache
 
 static unsigned cyc_hi = 0;
 static unsigned cyc_lo = 0;
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
     salto_linea_cache = LINEA_CACHE / (sizeof(double)); // La cantidad que tenemos que avanzar dentro de la matriz
 
-    ind = malloc(F * sizeof(int)); // El vector de índices se puede reservar con malloc()
+    ind = malloc(F * sizeof(int)); // El vector de indices se puede reservar con malloc()
 
     for (i = 0; i < F; i++)
     { // Inicializamos los elementos del vector a 0, 1, 2, ...
@@ -108,16 +108,16 @@ int main(int argc, char **argv)
         for (j = 0; j < F; j++)
         {
             for (k = 0; k < C; k+=salto_linea_cache) {
-                suma = suma + M[ind[j]][k]; // Al cambiar de línea, empezamos de nuevo en k=0
+                suma = suma + M[ind[j]][k]; // Al cambiar de linea, empezamos de nuevo en k=0
             }
         }
-        red[i] = suma; // Guardamos el resultado de la reducción
+        red[i] = suma; // Guardamos el resultado de la reduccion
     }
 
     tiempo = get_counter(); // Paramos el contador
 
-    // Imprimimos los resultados de calcular la reducción
-    printf("Resultados de la reducción: ");
+    // Imprimimos los resultados de calcular la reduccion
+    printf("Resultados de la reduccion: ");
     for (int i = 0; i < 10; i++)
     {
         printf("%lf  ", red[i]);
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
     _mm_free(M);
     free(ind);
 
-    num_accesos = (10.0*((double)(F*(1 + ((C-1)/salto_linea_cache))))); // El número de accesos es el mayor índice de la fila, dividido entre el número de elementos de una línea caché y truncado, más uno, porque siempre se accede al elemento 0, multiplicado por el número de filas y por 10, porque hacemos 10 reducciones.
+    num_accesos = (10.0*((double)(F*(1 + ((C-1)/salto_linea_cache))))); // El numero de accesos es el mayor indice de la fila, dividido entre el numero de elementos de una linea cache y truncado, mas uno, porque siempre se accede al elemento 0, multiplicado por el numero de filas y por 10, porque hacemos 10 reducciones.
 
     escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / num_accesos); // Escribimos los resultados en el archivo CSV
 

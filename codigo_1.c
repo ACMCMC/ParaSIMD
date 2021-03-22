@@ -3,7 +3,7 @@
 #include <pmmintrin.h>
 #include <time.h>
 
-#define LINEA_CACHE 64 // Bytes que hay en una línea cache
+#define LINEA_CACHE 64 // Bytes que hay en una linea cache
 
 static unsigned cyc_hi = 0;
 static unsigned cyc_lo = 0;
@@ -114,12 +114,12 @@ int main(int argc, char **argv)
         {
             suma = suma + M[ind[j]][0]; // Sumamos el elemento 0 de cada fila
         }
-        red[i] = suma; // Guardamos el resultado de la reducción
+        red[i] = suma; // Guardamos el resultado de la reduccian
     }
 
     tiempo = get_counter(); // Paramos el contador
 
-    // Imprimimos los resultados de calcular la reducción
+    // Imprimimos los resultados de calcular la reduccion
     printf("Resultados de la reduccion: ");
     for (int i = 0; i < 10; i++)
     {
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     _mm_free(M);
     free(ind);
 
-    num_accesos = (10.0*((double)F));  // El número de accesos el número de filas, por 10
+    num_accesos = (10.0*((double)F));  // El numero de accesos el numero de filas, por 10
 
     escribir_resultado(id_prueba, C, F, L, tiempo, tiempo / num_accesos); // Escribimos los resultados en el archivo CSV
 
